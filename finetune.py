@@ -15,10 +15,10 @@ def main(cfg):
     #Load the base model you want to finetune
     pretrained_model = cfg.pretrained_model_path
     model = AutoModelForCausalLM.from_pretrained(
-        pretrained_model, 
-        use_flash_attention_2=cfg.flash_attention2, 
-        torch_dtype=torch.bfloat16, 
-        trust_remote_code = True
+        pretrained_model,
+        attn_implementation="flash_attention_2" if cfg.flash_attention2 else "eager",
+        dtype=torch.bfloat16,
+        trust_remote_code=True,
         )
 
     #enable gradient checkpointing
@@ -67,7 +67,7 @@ def main(cfg):
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=batch_size,
         weight_decay=cfg.ft.weight_decay,
-        evaluation_strategy="no",
+        eval_strategy="no",
         gradient_accumulation_steps=gradient_accumulation_steps,
         warmup_steps=max(1, max_steps//10),
         max_steps=max_steps,
@@ -83,7 +83,7 @@ def main(cfg):
         args=training_args,
         train_dataset=torch_format_dataset,
         eval_dataset=torch_format_dataset,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         data_collator=custom_data_collator,
         compute_metrics=None,
         callbacks=[SaveTrainingAndEvaluateCallback(save_path=f'{cfg.ft.save_dir}/log.txt')],

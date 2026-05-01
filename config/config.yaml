@@ -1,5 +1,5 @@
-model_family: llama2-7b-chat # mistral-7b-instruct
-pretrained_model_path: meta-llama/Llama-2-7b-chat-hf #mistralai/Mistral-7B-Instruct-v0.2
+model_family: llama3-8b-instruct # mistral-7b-instruct
+pretrained_model_path: meta-llama/Meta-Llama-3-8B-Instruct #mistralai/Mistral-7B-Instruct-v0.2
 
 question_start_tag: "[INST] "
 question_end_tag: " [/INST]"
@@ -13,8 +13,8 @@ dataset_name: pistol_sample1
 data_path: data/sample_data_1.json #data/sample_data_2.json
 
 
-forget_type: forget_AC # dir for output saving
-forget_edge: ['A_C'] # list of strings for choosing the forget edge(s) e.g. ['A_B'] or ['A_C','A_C2','A_C3']
+forget_type: forget_AB # dir for output saving
+forget_edge: ['A_B'] # list of strings for choosing the forget edge(s) e.g. ['A_B'] or ['A_C','A_C2','A_C3']
 #independent edges only apply to sample dataset 1, change to [] for sample dataset 2
 independent_sales_edge: ['E1_F1', 'E2_F2', 'E3_F3'] 
 indepedent_employment_edge: ['E1_q1', 'E2_q2', 'E3_q3']
